@@ -319,6 +319,11 @@ abstract class BaseMainActivity : AppCompatActivity(),
         }
     }
 
+    /* Implements PlayerFullFragmentListener - Switch to favorite station */
+    override fun onFavoriteStationTapped(position: Int) {
+        onPlayButtonTapped(position)
+    }
+
 
     /* Implements PlayerFullFragmentListener - Exit fullscreen */
     override fun onExitFullscreen() {

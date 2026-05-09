@@ -15,7 +15,11 @@ import android.widget.ImageButton
 import android.widget.ImageView
 import android.widget.TextView
 import androidx.fragment.app.Fragment
+import androidx.recyclerview.widget.LinearLayoutManager
+import androidx.recyclerview.widget.RecyclerView
 import org.y20k.transistor.core.Station
+import org.y20k.transistor.helpers.CollectionHelper
+import org.y20k.transistor.helpers.FileHelper
 import org.y20k.transistor.helpers.PreferencesHelper
 
 class PlayerFullFragment : Fragment() {
@@ -34,12 +38,15 @@ class PlayerFullFragment : Fragment() {
     private var buttonPlay: ImageButton? = null
     private var buttonNext: ImageButton? = null
     private var buttonFullscreenExit: ImageButton? = null
+    private var favoritesRecyclerView: RecyclerView? = null
+    private var favoritesAdapter: FavoritesAdapter? = null
 
     interface PlayerFullFragmentListener {
         fun onPlayButtonTapped()
         fun onPreviousButtonTapped()
         fun onNextButtonTapped()
         fun onExitFullscreen()
+        fun onFavoriteStationTapped(position: Int)
     }
 
     fun setInitialData(station: Station, isPlaying: Boolean) {
@@ -50,7 +57,7 @@ class PlayerFullFragment : Fragment() {
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View {
         val displayMode = PreferencesHelper.loadFullScreenDisplayMode()
         val layoutId = when (displayMode) {
-            Keys.FULL_SCREEN_MODE_PORTRAIT -> R.layout.fragment_player_full_portrait
+            Keys.FULL_SCREEN_MODE_PORTRAIT -> R.layout.fragment_player_full_favorites
             Keys.FULL_SCREEN_MODE_LANDSCAPE -> R.layout.fragment_player_full_landscape
             else -> R.layout.fragment_player_full
         }
@@ -66,6 +73,7 @@ class PlayerFullFragment : Fragment() {
         buttonPlay = rootView.findViewById(R.id.buttonPlay)
         buttonNext = rootView.findViewById(R.id.buttonNext)
         buttonFullscreenExit = rootView.findViewById(R.id.buttonFullscreenExit)
+        favoritesRecyclerView = rootView.findViewById(R.id.favoritesRecyclerView)
 
         buttonPrev?.setOnClickListener { listener?.onPreviousButtonTapped() }
         buttonPlay?.setOnClickListener { listener?.onPlayButtonTapped() }
@@ -86,11 +94,41 @@ class PlayerFullFragment : Fragment() {
             } else false
         }
 
+        // Set up favorites list if needed
+        if (displayMode == Keys.FULL_SCREEN_MODE_PORTRAIT) {
+            favoritesRecyclerView?.layoutManager = LinearLayoutManager(requireContext())
+            favoritesAdapter = FavoritesAdapter(object : FavoritesAdapter.FavoriteStationClickListener {
+                override fun onFavoriteStationClick(stationPosition: Int) {
+                    listener?.onFavoriteStationTapped(stationPosition)
+                }
+            })
+            favoritesRecyclerView?.adapter = favoritesAdapter
+            loadFavorites()
+        }
+
         initialStation?.let { station ->
             updatePlayerViews(requireContext(), station, initialIsPlaying)
         }
 
+        // Also set last known metadata from history
+        val metadataHistory = PreferencesHelper.loadMetadataHistory()
+        if (metadataHistory.isNotEmpty()) {
+            updateMetadata(metadataHistory.last())
+        }
+
         return rootView
+    }
+
+    private fun loadFavorites() {
+        val collection = FileHelper.readCollection(requireContext())
+        // Map from favorite stations in sorted collection to their positions in original collection
+        val favoriteStationsWithPositions = mutableListOf<Pair<Station, Int>>()
+        collection.stations.forEachIndexed { index, station ->
+            if (station.starred) {
+                favoriteStationsWithPositions.add(Pair(station, index))
+            }
+        }
+        favoritesAdapter?.submitList(favoriteStationsWithPositions)
     }
 
     override fun onAttach(context: Context) {
@@ -141,6 +179,64 @@ class PlayerFullFragment : Fragment() {
             playerStationMetadata?.isSelected = true
             textViewMetadata?.text = metadata
             textViewMetadata?.isSelected = true
+        }
+    }
+
+    // Adapter for favorites list
+    private class FavoritesAdapter(
+        private val clickListener: FavoriteStationClickListener
+    ) : RecyclerView.Adapter<FavoritesAdapter.FavoriteStationViewHolder>() {
+
+        private var favoriteStations: List<Pair<Station, Int>> = emptyList()
+
+        interface FavoriteStationClickListener {
+            fun onFavoriteStationClick(stationPosition: Int)
+        }
+
+        fun submitList(list: List<Pair<Station, Int>>) {
+            favoriteStations = list
+            notifyDataSetChanged()
+        }
+
+        override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): FavoriteStationViewHolder {
+            val view = LayoutInflater.from(parent.context)
+                .inflate(R.layout.item_favorite_station, parent, false)
+            return FavoriteStationViewHolder(view)
+        }
+
+        override fun onBindViewHolder(holder: FavoriteStationViewHolder, position: Int) {
+            val (station, originalPosition) = favoriteStations[position]
+            holder.bind(station, originalPosition)
+        }
+
+        override fun getItemCount(): Int = favoriteStations.size
+
+        inner class FavoriteStationViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
+            private val stationIcon: ImageView = itemView.findViewById(R.id.favoriteStationIcon)
+            private val stationName: TextView = itemView.findViewById(R.id.favoriteStationName)
+
+            fun bind(station: Station, originalPosition: Int) {
+                stationName.text = station.name
+                try {
+                    if (!station.image.isNullOrEmpty()) {
+                        com.bumptech.glide.Glide.with(itemView.context)
+                            .load(station.image)
+                            .error(R.drawable.ic_default_station_image_64dp)
+                            .into(stationIcon)
+                    } else {
+                        com.bumptech.glide.Glide.with(itemView.context)
+                            .load(R.drawable.ic_default_station_image_64dp)
+                            .into(stationIcon)
+                    }
+                } catch (e: Exception) {
+                    com.bumptech.glide.Glide.with(itemView.context)
+                        .load(R.drawable.ic_default_station_image_64dp)
+                        .into(stationIcon)
+                }
+                itemView.setOnClickListener {
+                    clickListener.onFavoriteStationClick(originalPosition)
+                }
+            }
         }
     }
 }
