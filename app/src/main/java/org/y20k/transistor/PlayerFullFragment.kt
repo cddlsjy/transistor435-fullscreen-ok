@@ -334,7 +334,7 @@ class PlayerFullFragment : Fragment() {
 
             fun bind(station: Station, isPlaying: Boolean) {
                 stationName.text = station.name
-                stationDate.text = station.publicationDate
+                stationDate.text = java.text.SimpleDateFormat("yyyy.MM.dd", java.util.Locale.getDefault()).format(station.modificationDate)
                 playingIndicator.visibility = if (isPlaying) View.VISIBLE else View.GONE
 
                 try {
