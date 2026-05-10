@@ -240,6 +240,8 @@ object Keys {
     const val FULL_SCREEN_MODE_DEFAULT: String = "mode_default"
     const val FULL_SCREEN_MODE_PORTRAIT: String = "mode_portrait"
     const val FULL_SCREEN_MODE_LANDSCAPE: String = "mode_landscape"
+    const val FULL_SCREEN_MODE_SPLIT: String = "mode_split"
+    const val FULL_SCREEN_MODE_AUTO: String = "mode_auto"
 
     // unique names
     const val NAME_PERIODIC_COLLECTION_UPDATE_WORK: String = "PERIODIC_COLLECTION_UPDATE_WORK"

@@ -21,6 +21,7 @@ import org.y20k.transistor.core.Station
 import org.y20k.transistor.helpers.CollectionHelper
 import org.y20k.transistor.helpers.FileHelper
 import org.y20k.transistor.helpers.PreferencesHelper
+import android.util.DisplayMetrics
 
 class PlayerFullFragment : Fragment() {
 
