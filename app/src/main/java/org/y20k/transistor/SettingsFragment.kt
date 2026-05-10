@@ -200,19 +200,19 @@ class SettingsFragment: PreferenceFragmentCompat(), YesNoDialog.YesNoDialogListe
             }
         }
 
-        // set up "Full Screen Background" preference
+        // set up "Full Screen Logo Shape" preference
         val preferenceFullScreenBackground: ListPreference = ListPreference(activity as Context)
-        preferenceFullScreenBackground.title = "全屏播放背景"
+        preferenceFullScreenBackground.title = "全屏播放Logo"
         preferenceFullScreenBackground.setIcon(R.drawable.ic_play_circle_outline_24dp)
         preferenceFullScreenBackground.key = Keys.PREF_FULL_SCREEN_BACKGROUND
-        preferenceFullScreenBackground.summary = "${getString(R.string.pref_full_screen_display_mode_summary)} ${getBackgroundName(PreferencesHelper.loadFullScreenBackground())}"
-        preferenceFullScreenBackground.entries = arrayOf("默认背景", "模糊背景", "深色背景")
-        preferenceFullScreenBackground.entryValues = arrayOf(Keys.FULL_SCREEN_BACKGROUND_DEFAULT, Keys.FULL_SCREEN_BACKGROUND_BLUR, Keys.FULL_SCREEN_BACKGROUND_DARK)
-        preferenceFullScreenBackground.setDefaultValue(Keys.FULL_SCREEN_BACKGROUND_DEFAULT)
+        preferenceFullScreenBackground.summary = getBackgroundName(PreferencesHelper.loadFullScreenBackground())
+        preferenceFullScreenBackground.entries = arrayOf("圆形", "方形")
+        preferenceFullScreenBackground.entryValues = arrayOf(Keys.STATION_LOGO_SHAPE_CIRCLE, Keys.STATION_LOGO_SHAPE_SQUARE)
+        preferenceFullScreenBackground.setDefaultValue(Keys.STATION_LOGO_SHAPE_CIRCLE)
         preferenceFullScreenBackground.setOnPreferenceChangeListener { preference, newValue ->
             if (preference is ListPreference) {
                 val index: Int = preference.entryValues.indexOf(newValue)
-                preferenceFullScreenBackground.summary = "${getString(R.string.pref_full_screen_display_mode_summary)} ${preference.entries[index]}"
+                preferenceFullScreenBackground.summary = preference.entries[index] as String
                 true
             } else {
                 false
@@ -586,13 +586,12 @@ class SettingsFragment: PreferenceFragmentCompat(), YesNoDialog.YesNoDialogListe
     }
 
 
-    /* Gets background name for summary */
-    private fun getBackgroundName(background: String): String {
-        return when (background) {
-            Keys.FULL_SCREEN_BACKGROUND_DEFAULT -> "默认背景"
-            Keys.FULL_SCREEN_BACKGROUND_BLUR -> "模糊背景"
-            Keys.FULL_SCREEN_BACKGROUND_DARK -> "深色背景"
-            else -> "默认背景"
+    /* Gets background/logo shape name for summary */
+    private fun getBackgroundName(shape: String): String {
+        return when (shape) {
+            Keys.STATION_LOGO_SHAPE_CIRCLE -> "圆形"
+            Keys.STATION_LOGO_SHAPE_SQUARE -> "方形"
+            else -> "圆形"
         }
     }
 

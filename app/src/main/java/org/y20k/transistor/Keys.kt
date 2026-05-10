@@ -249,6 +249,10 @@ object Keys {
     const val FULL_SCREEN_BACKGROUND_BLUR: String = "bg_blur"
     const val FULL_SCREEN_BACKGROUND_DARK: String = "bg_dark"
 
+    // station logo shape modes
+    const val STATION_LOGO_SHAPE_CIRCLE: String = "logo_circle"
+    const val STATION_LOGO_SHAPE_SQUARE: String = "logo_square"
+
     // unique names
     const val NAME_PERIODIC_COLLECTION_UPDATE_WORK: String = "PERIODIC_COLLECTION_UPDATE_WORK"
 

@@ -393,4 +393,18 @@ object PreferencesHelper {
         }
     }
 
+
+    /* Loads value of the option: Station Logo Shape */
+    fun loadStationLogoShape(): String {
+        return sharedPreferences.getString(Keys.PREF_STATION_LOGO_SHAPE, Keys.STATION_LOGO_SHAPE_CIRCLE) ?: Keys.STATION_LOGO_SHAPE_CIRCLE
+    }
+
+
+    /* Saves value of the option: Station Logo Shape */
+    fun saveStationLogoShape(shape: String) {
+        sharedPreferences.edit {
+            putString(Keys.PREF_STATION_LOGO_SHAPE, shape)
+        }
+    }
+
 }
