@@ -336,12 +336,6 @@ class PlayerFullFragment : Fragment() {
                 stationName.text = station.name
                 stationDate.text = station.publicationDate
                 playingIndicator.visibility = if (isPlaying) View.VISIBLE else View.GONE
-                
-                if (isPlaying) {
-                    itemView.setBackgroundResource(R.drawable.ic_player_progress_bar)
-                } else {
-                    itemView.background = null
-                }
 
                 try {
                     if (!station.image.isNullOrEmpty()) {
