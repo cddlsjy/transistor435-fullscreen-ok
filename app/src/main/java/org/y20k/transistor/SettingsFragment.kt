@@ -187,8 +187,8 @@ class SettingsFragment: PreferenceFragmentCompat(), YesNoDialog.YesNoDialogListe
         preferenceFullScreenDisplayMode.setIcon(R.drawable.ic_play_circle_outline_24dp)
         preferenceFullScreenDisplayMode.key = Keys.PREF_FULL_SCREEN_DISPLAY_MODE
         preferenceFullScreenDisplayMode.summary = "${getString(R.string.pref_full_screen_display_mode_summary)} ${getDisplayModeName(PreferencesHelper.loadFullScreenDisplayMode())}"
-        preferenceFullScreenDisplayMode.entries = arrayOf("默认显示", "收藏列表", "横屏风格")
-        preferenceFullScreenDisplayMode.entryValues = arrayOf(Keys.FULL_SCREEN_MODE_DEFAULT, Keys.FULL_SCREEN_MODE_PORTRAIT, Keys.FULL_SCREEN_MODE_LANDSCAPE)
+        preferenceFullScreenDisplayMode.entries = arrayOf("默认显示", "收藏列表", "横屏风格", "左右分屏", "自动切换")
+        preferenceFullScreenDisplayMode.entryValues = arrayOf(Keys.FULL_SCREEN_MODE_DEFAULT, Keys.FULL_SCREEN_MODE_PORTRAIT, Keys.FULL_SCREEN_MODE_LANDSCAPE, Keys.FULL_SCREEN_MODE_SPLIT, Keys.FULL_SCREEN_MODE_AUTO)
         preferenceFullScreenDisplayMode.setDefaultValue(Keys.FULL_SCREEN_MODE_DEFAULT)
         preferenceFullScreenDisplayMode.setOnPreferenceChangeListener { preference, newValue ->
             if (preference is ListPreference) {
@@ -558,6 +558,8 @@ class SettingsFragment: PreferenceFragmentCompat(), YesNoDialog.YesNoDialogListe
             Keys.FULL_SCREEN_MODE_DEFAULT -> "默认显示"
             Keys.FULL_SCREEN_MODE_PORTRAIT -> "收藏列表"
             Keys.FULL_SCREEN_MODE_LANDSCAPE -> "横屏风格"
+            Keys.FULL_SCREEN_MODE_SPLIT -> "左右分屏"
+            Keys.FULL_SCREEN_MODE_AUTO -> "自动切换"
             else -> "默认显示"
         }
     }
