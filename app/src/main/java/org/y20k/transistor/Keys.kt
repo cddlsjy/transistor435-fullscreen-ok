@@ -109,6 +109,7 @@ object Keys {
     const val PREF_AUTO_PLAY_LAST_STATION: String = "AUTO_PLAY_LAST_STATION"
     const val PREF_AUTO_FULL_SCREEN_PLAYBACK: String = "AUTO_FULL_SCREEN_PLAYBACK"
     const val PREF_FULL_SCREEN_DISPLAY_MODE: String = "FULL_SCREEN_DISPLAY_MODE"
+    const val PREF_FULL_SCREEN_BACKGROUND: String = "FULL_SCREEN_BACKGROUND"
 
 
     // states
@@ -242,6 +243,11 @@ object Keys {
     const val FULL_SCREEN_MODE_LANDSCAPE: String = "mode_landscape"
     const val FULL_SCREEN_MODE_SPLIT: String = "mode_split"
     const val FULL_SCREEN_MODE_AUTO: String = "mode_auto"
+
+    // fullscreen background modes
+    const val FULL_SCREEN_BACKGROUND_DEFAULT: String = "bg_default"
+    const val FULL_SCREEN_BACKGROUND_BLUR: String = "bg_blur"
+    const val FULL_SCREEN_BACKGROUND_DARK: String = "bg_dark"
 
     // unique names
     const val NAME_PERIODIC_COLLECTION_UPDATE_WORK: String = "PERIODIC_COLLECTION_UPDATE_WORK"

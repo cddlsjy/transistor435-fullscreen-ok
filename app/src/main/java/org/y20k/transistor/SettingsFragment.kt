@@ -200,6 +200,25 @@ class SettingsFragment: PreferenceFragmentCompat(), YesNoDialog.YesNoDialogListe
             }
         }
 
+        // set up "Full Screen Background" preference
+        val preferenceFullScreenBackground: ListPreference = ListPreference(activity as Context)
+        preferenceFullScreenBackground.title = "全屏播放背景"
+        preferenceFullScreenBackground.setIcon(R.drawable.ic_play_circle_outline_24dp)
+        preferenceFullScreenBackground.key = Keys.PREF_FULL_SCREEN_BACKGROUND
+        preferenceFullScreenBackground.summary = "${getString(R.string.pref_full_screen_display_mode_summary)} ${getBackgroundName(PreferencesHelper.loadFullScreenBackground())}"
+        preferenceFullScreenBackground.entries = arrayOf("默认背景", "模糊背景", "深色背景")
+        preferenceFullScreenBackground.entryValues = arrayOf(Keys.FULL_SCREEN_BACKGROUND_DEFAULT, Keys.FULL_SCREEN_BACKGROUND_BLUR, Keys.FULL_SCREEN_BACKGROUND_DARK)
+        preferenceFullScreenBackground.setDefaultValue(Keys.FULL_SCREEN_BACKGROUND_DEFAULT)
+        preferenceFullScreenBackground.setOnPreferenceChangeListener { preference, newValue ->
+            if (preference is ListPreference) {
+                val index: Int = preference.entryValues.indexOf(newValue)
+                preferenceFullScreenBackground.summary = "${getString(R.string.pref_full_screen_display_mode_summary)} ${preference.entries[index]}"
+                true
+            } else {
+                false
+            }
+        }
+
         // set up "Update Station Images" preference
         val preferenceUpdateStationImages: Preference = Preference(activity as Context)
         preferenceUpdateStationImages.title = getString(R.string.pref_update_station_images_title)
@@ -319,6 +338,7 @@ class SettingsFragment: PreferenceFragmentCompat(), YesNoDialog.YesNoDialogListe
         preferenceCategoryGeneral.contains(preferenceAutoPlayLastStation)
         preferenceCategoryGeneral.contains(preferenceAutoFullScreenPlayback)
         preferenceCategoryGeneral.contains(preferenceFullScreenDisplayMode)
+        preferenceCategoryGeneral.contains(preferenceFullScreenBackground)
 
         val preferenceCategoryMaintenance: PreferenceCategory = PreferenceCategory(activity as Context)
         preferenceCategoryMaintenance.title = getString(R.string.pref_maintenance_title)
@@ -348,6 +368,7 @@ class SettingsFragment: PreferenceFragmentCompat(), YesNoDialog.YesNoDialogListe
         screen.addPreference(preferenceAutoPlayLastStation)
         screen.addPreference(preferenceAutoFullScreenPlayback)
         screen.addPreference(preferenceFullScreenDisplayMode)
+        screen.addPreference(preferenceFullScreenBackground)
         screen.addPreference(preferenceCategoryMaintenance)
         screen.addPreference(preferenceUpdateStationImages)
 //        screen.addPreference(preferenceUpdateCollection)
@@ -561,6 +582,17 @@ class SettingsFragment: PreferenceFragmentCompat(), YesNoDialog.YesNoDialogListe
             Keys.FULL_SCREEN_MODE_SPLIT -> "左右分屏"
             Keys.FULL_SCREEN_MODE_AUTO -> "自动切换"
             else -> "默认显示"
+        }
+    }
+
+
+    /* Gets background name for summary */
+    private fun getBackgroundName(background: String): String {
+        return when (background) {
+            Keys.FULL_SCREEN_BACKGROUND_DEFAULT -> "默认背景"
+            Keys.FULL_SCREEN_BACKGROUND_BLUR -> "模糊背景"
+            Keys.FULL_SCREEN_BACKGROUND_DARK -> "深色背景"
+            else -> "默认背景"
         }
     }
 
