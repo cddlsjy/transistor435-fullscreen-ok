@@ -368,14 +368,12 @@ class PlayerFullFragment : Fragment() {
         if (imageView is com.google.android.material.imageview.ShapeableImageView) {
             when (shape) {
                 Keys.STATION_LOGO_SHAPE_CIRCLE -> {
-                    val density = resources.displayMetrics.density
-                    val circularCorner = 1000f * density
-                    imageView.shapeAppearanceModel = imageView.shapeAppearanceModel.toBuilder()
-                        .setAllCorners(com.google.android.material.shape.CornerFamily.ROUNDED, circularCorner)
+                    imageView.shapeAppearanceModel = com.google.android.material.shape.ShapeAppearanceModel.builder()
+                        .setAllCorners(com.google.android.material.shape.CornerFamily.ROUNDED, 50f)
                         .build()
                 }
                 Keys.STATION_LOGO_SHAPE_SQUARE -> {
-                    imageView.shapeAppearanceModel = imageView.shapeAppearanceModel.toBuilder()
+                    imageView.shapeAppearanceModel = com.google.android.material.shape.ShapeAppearanceModel.builder()
                         .setAllCorners(com.google.android.material.shape.CornerFamily.ROUNDED, 0f)
                         .build()
                 }
