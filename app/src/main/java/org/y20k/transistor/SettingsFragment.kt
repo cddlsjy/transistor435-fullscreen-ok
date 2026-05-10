@@ -338,7 +338,7 @@ class SettingsFragment: PreferenceFragmentCompat(), YesNoDialog.YesNoDialogListe
         preferenceCategoryGeneral.contains(preferenceAutoPlayLastStation)
         preferenceCategoryGeneral.contains(preferenceAutoFullScreenPlayback)
         preferenceCategoryGeneral.contains(preferenceFullScreenDisplayMode)
-        preferenceCategoryGeneral.contains(preferenceFullScreenBackground)
+        preferenceCategoryGeneral.contains(preferenceStationLogoShape)
 
         val preferenceCategoryMaintenance: PreferenceCategory = PreferenceCategory(activity as Context)
         preferenceCategoryMaintenance.title = getString(R.string.pref_maintenance_title)
@@ -368,7 +368,7 @@ class SettingsFragment: PreferenceFragmentCompat(), YesNoDialog.YesNoDialogListe
         screen.addPreference(preferenceAutoPlayLastStation)
         screen.addPreference(preferenceAutoFullScreenPlayback)
         screen.addPreference(preferenceFullScreenDisplayMode)
-        screen.addPreference(preferenceFullScreenBackground)
+        screen.addPreference(preferenceStationLogoShape)
         screen.addPreference(preferenceCategoryMaintenance)
         screen.addPreference(preferenceUpdateStationImages)
 //        screen.addPreference(preferenceUpdateCollection)
