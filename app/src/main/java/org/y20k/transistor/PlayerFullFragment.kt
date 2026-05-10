@@ -366,17 +366,10 @@ class PlayerFullFragment : Fragment() {
         if (imageView == null) return
         val shape = PreferencesHelper.loadStationLogoShape()
         if (imageView is com.google.android.material.imageview.ShapeableImageView) {
-            when (shape) {
-                Keys.STATION_LOGO_SHAPE_CIRCLE -> {
-                    imageView.shapeAppearanceModel = com.google.android.material.shape.ShapeAppearanceModel.builder()
-                        .setAllCorners(com.google.android.material.shape.CornerFamily.ROUNDED, 50f)
-                        .build()
-                }
-                Keys.STATION_LOGO_SHAPE_SQUARE -> {
-                    imageView.shapeAppearanceModel = com.google.android.material.shape.ShapeAppearanceModel.builder()
-                        .setAllCorners(com.google.android.material.shape.CornerFamily.ROUNDED, 0f)
-                        .build()
-                }
+            if (shape == Keys.STATION_LOGO_SHAPE_SQUARE) {
+                imageView.shapeAppearanceModel = imageView.shapeAppearanceModel.toBuilder()
+                    .setAllCorners(com.google.android.material.shape.CornerFamily.ROUNDED, 0f)
+                    .build()
             }
         }
     }
