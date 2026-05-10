@@ -73,6 +73,8 @@ class PlayerFullFragment : Fragment() {
         val rootView = inflater.inflate(layoutId, container, false)
 
         stationIcon = rootView.findViewById(R.id.stationIcon)
+        applyLogoShape(stationIcon)
+
         textViewStationInfo = rootView.findViewById(R.id.textViewStationInfo)
         textViewMetadata = rootView.findViewById(R.id.textViewMetadata)
         playerStationName = rootView.findViewById(R.id.playerStationName)
@@ -355,6 +357,27 @@ class PlayerFullFragment : Fragment() {
                 }
                 itemView.setOnClickListener {
                     clickListener.onStationClick(adapterPosition)
+                }
+            }
+        }
+    }
+
+    private fun applyLogoShape(imageView: android.widget.ImageView?) {
+        if (imageView == null) return
+        val shape = PreferencesHelper.loadStationLogoShape()
+        if (imageView is com.google.android.material.imageview.ShapeableImageView) {
+            when (shape) {
+                Keys.STATION_LOGO_SHAPE_CIRCLE -> {
+                    val density = resources.displayMetrics.density
+                    val circularCorner = 1000f * density
+                    imageView.shapeAppearanceModel = imageView.shapeAppearanceModel.toBuilder()
+                        .setAllCorners(com.google.android.material.shape.CornerFamily.ROUNDED, circularCorner)
+                        .build()
+                }
+                Keys.STATION_LOGO_SHAPE_SQUARE -> {
+                    imageView.shapeAppearanceModel = imageView.shapeAppearanceModel.toBuilder()
+                        .setAllCorners(com.google.android.material.shape.CornerFamily.ROUNDED, 0f)
+                        .build()
                 }
             }
         }

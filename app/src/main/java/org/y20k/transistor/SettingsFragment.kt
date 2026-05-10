@@ -201,18 +201,18 @@ class SettingsFragment: PreferenceFragmentCompat(), YesNoDialog.YesNoDialogListe
         }
 
         // set up "Full Screen Logo Shape" preference
-        val preferenceFullScreenBackground: ListPreference = ListPreference(activity as Context)
-        preferenceFullScreenBackground.title = "全屏播放Logo"
-        preferenceFullScreenBackground.setIcon(R.drawable.ic_play_circle_outline_24dp)
-        preferenceFullScreenBackground.key = Keys.PREF_FULL_SCREEN_BACKGROUND
-        preferenceFullScreenBackground.summary = getBackgroundName(PreferencesHelper.loadFullScreenBackground())
-        preferenceFullScreenBackground.entries = arrayOf("圆形", "方形")
-        preferenceFullScreenBackground.entryValues = arrayOf(Keys.STATION_LOGO_SHAPE_CIRCLE, Keys.STATION_LOGO_SHAPE_SQUARE)
-        preferenceFullScreenBackground.setDefaultValue(Keys.STATION_LOGO_SHAPE_CIRCLE)
-        preferenceFullScreenBackground.setOnPreferenceChangeListener { preference, newValue ->
+        val preferenceStationLogoShape: ListPreference = ListPreference(activity as Context)
+        preferenceStationLogoShape.title = "全屏播放Logo"
+        preferenceStationLogoShape.setIcon(R.drawable.ic_play_circle_outline_24dp)
+        preferenceStationLogoShape.key = Keys.PREF_STATION_LOGO_SHAPE
+        preferenceStationLogoShape.summary = getBackgroundName(PreferencesHelper.loadStationLogoShape())
+        preferenceStationLogoShape.entries = arrayOf("圆形", "方形")
+        preferenceStationLogoShape.entryValues = arrayOf(Keys.STATION_LOGO_SHAPE_CIRCLE, Keys.STATION_LOGO_SHAPE_SQUARE)
+        preferenceStationLogoShape.setDefaultValue(Keys.STATION_LOGO_SHAPE_CIRCLE)
+        preferenceStationLogoShape.setOnPreferenceChangeListener { preference, newValue ->
             if (preference is ListPreference) {
                 val index: Int = preference.entryValues.indexOf(newValue)
-                preferenceFullScreenBackground.summary = preference.entries[index] as String
+                preferenceStationLogoShape.summary = preference.entries[index] as String
                 true
             } else {
                 false
